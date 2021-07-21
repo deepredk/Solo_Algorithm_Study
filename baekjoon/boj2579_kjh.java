@@ -1,37 +1,32 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    int number = Input.nextInt();
+    final int STAIRS = Input.nextInt();
 
-    StringBuilder sb = new StringBuilder();
-    for (int i = 2; i <= Math.sqrt(number); i++) {
-      while (number % i == 0) {
-        sb.append(i).append('\n');
-        number /= i;
-      }
-    }
-    
-    if (number != 1) {
-      sb.append(number);
+    int[] stairs = new int[STAIRS + 1];
+    for (int i = 1; i <= STAIRS; i++) {
+      stairs[i] = Input.nextInt();
     }
 
-    System.out.print(sb);
+    System.out.print(getMaxScore(stairs, 0, 0));
   }
 
-  static boolean isPrime(int num) {
-    if (num == 1) return false;
-
-    for (int i = 2; i <= (int) Math.sqrt(num); i++) {
-      if (num % i == 0) return false;
+  static int getMaxScore(int[] stairs, int currentStair, int oneStepCount) {
+    int score = stairs[currentStair];
+    int maxScore = score;
+    
+    if (currentStair <= stairs.length - 3) {
+      maxScore = Math.max(maxScore, score + getMaxScore(stairs, currentStair + 2, 0));
+    }
+    if (oneStepCount <= 1 && currentStair <= stairs.length - 2) {
+      maxScore = Math.max(maxScore, score + getMaxScore(stairs, currentStair + 1, oneStepCount + 1));
     }
 
-    return true;
+    return maxScore;
   }
 }
 

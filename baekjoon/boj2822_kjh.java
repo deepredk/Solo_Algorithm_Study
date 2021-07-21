@@ -1,37 +1,40 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    final int M = Input.nextInt();
-    final int N = Input.nextInt();
+    List<Integer> scores = new ArrayList<>();
 
-    int sum = 0;
-    int min = 10001;
-    for (int num = M; num <= N; num++) {
-      if (!isPrime(num)) continue;
-      sum += num;
-      min = num < min ? num : min;
+    int totalScore = 0;
+    for (int i = 0; i < 8; i++) {
+      int score = Input.nextInt();
+
+      scores.add(score);
+      totalScore += score;
     }
+
+    List<Integer> top5Scores = scores.stream()
+      .sorted(Comparator.reverseOrder())
+      .limit(5)
+      .collect(toList());
+
+    int top5ScoresSum = top5Scores.stream().reduce(0, Integer::sum);
+    String top5AnswersNumber = top5Scores.stream()
+      .mapToInt(i -> scores.indexOf(i) + 1)
+      .sorted()
+      .mapToObj(String::valueOf)
+      .collect(joining(" "));
     
-    if (sum == 0) {
-      System.out.print(-1);
-      return;
-    }
-    System.out.printf("%d\n%d", sum, min);
-  }
-  
-  static boolean isPrime(int number) {
-    if (number == 1) return false;
-
-    for (int i = 2; i <= Math.sqrt(number); i++) {
-      if (number % i == 0) {
-        return false;
-      }
-    }
-    return true;
+    System.out.println(top5ScoresSum);
+    System.out.println(top5AnswersNumber);
   }
 }
 
@@ -72,6 +75,16 @@ class Input {
     return tokenizer.nextToken();
   }
 
+  public static void skipLine() {
+    nextLine();
+  }
+
+  public static void skipLine(int n) {
+    for (int i = 0; i < n; i++) {
+      nextLine();
+    }
+  }
+  
   private static void makeTokensIfNeed() {
     makeTokensIfNotReadedYet();
     makeTokensIfHasNoToken();

@@ -1,49 +1,37 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Main {
-  static int[] numberOfCallingZero;
-  static int[] numberOfCallingOne;
-
   public static void main(String[] args) throws Exception {
-    final int T = Input.nextInt();
-    
-    numberOfCallingZero = new int[41];
-    numberOfCallingOne = new int[41];
+    final int M = Input.nextInt();
+    final int N = Input.nextInt();
 
-    numberOfCallingZero[0] = 1;
-    numberOfCallingZero[2] = 1;
-    numberOfCallingOne[1] = 1;
-    numberOfCallingOne[2] = 1;
-
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < T; i++) {
-      int n = Input.nextInt();
-      sb.append(getNumberOfCallingZero(n))
-        .append(' ')
-        .append(getNumberOfCallingOne(n))
-        .append('\n');
+    int sum = 0;
+    int min = 10001;
+    for (int num = M; num <= N; num++) {
+      if (!isPrime(num)) continue;
+      sum += num;
+      min = num < min ? num : min;
     }
-
-    System.out.print(sb);
+    
+    if (sum == 0) {
+      System.out.print(-1);
+      return;
+    }
+    System.out.printf("%d\n%d", sum, min);
   }
+  
+  static boolean isPrime(int number) {
+    if (number == 1) return false;
 
-  static int getNumberOfCallingZero(int n) {
-    if (n == 1) return 0;
-    if (numberOfCallingZero[n] != 0) return numberOfCallingZero[n];
-
-    numberOfCallingZero[n] = getNumberOfCallingZero(n - 1) + getNumberOfCallingZero(n - 2);
-    return numberOfCallingZero[n];
-  }
-
-  static int getNumberOfCallingOne(int n) {
-    if (n == 0) return 0;
-    if (numberOfCallingOne[n] != 0) return numberOfCallingOne[n];
-
-    numberOfCallingOne[n] = getNumberOfCallingOne(n - 1) + getNumberOfCallingOne(n - 2);
-    return numberOfCallingOne[n];
+    for (int i = 2; i <= Math.sqrt(number); i++) {
+      if (number % i == 0) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
@@ -84,16 +72,6 @@ class Input {
     return tokenizer.nextToken();
   }
 
-  public static void skipLine() {
-    nextLine();
-  }
-
-  public static void skipLine(int n) {
-    for (int i = 0; i < n; i++) {
-      nextLine();
-    }
-  }
-  
   private static void makeTokensIfNeed() {
     makeTokensIfNotReadedYet();
     makeTokensIfHasNoToken();

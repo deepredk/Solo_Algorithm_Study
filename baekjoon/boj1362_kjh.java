@@ -1,28 +1,51 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    final int PEOPLE  = Input.nextInt();
+    StringBuilder sb = new StringBuilder();
     
-    List<Integer> requiredTime = new ArrayList<>();
-    for (int i = 0; i < PEOPLE; i++) {
-      requiredTime.add(Input.nextInt());
-    }
-    requiredTime.sort(null);
+    int numberOfCase = 1;
+    while (true) {
+      int properWeight = Input.nextInt();
+      int weight = Input.nextInt();
+      boolean isDead = false;
 
-    int totalSum = 0;
-    int partialSum = 0;
-    for (int i = 0; i < PEOPLE; i++) {
-      partialSum += requiredTime.get(i);
-      totalSum += partialSum;
+      if (properWeight == 0) break;
+
+      while (true) {
+        char command = Input.nextChar();
+        int parameter = Input.nextInt();
+
+        if (command == 'F') {
+          weight += parameter;
+        }
+        if (command == 'E') {
+          weight -= parameter;
+          if (weight <= 0) isDead = true;
+        }
+
+        if (command == '#') {
+          sb.append(numberOfCase++).append(' ').append(isDead ? "RIP" : diagnoseCondition(properWeight, weight))
+            .append('\n');
+          break;
+        }
+      }
     }
 
-    System.out.print(totalSum);
+    System.out.print(sb);
+  }
+
+  static String diagnoseCondition(int properWeight, int weight) {
+    if (weight < 0) return "RIP";
+
+    if (weight > properWeight / 2 && weight < properWeight * 2) {
+      return ":-)";
+    }
+
+    return ":-(";
   }
 }
 

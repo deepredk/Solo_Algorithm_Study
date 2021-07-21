@@ -1,31 +1,30 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.Map;
-import java.util.HashMap;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    final int TOTAL_ACCOUNTS = Input.nextInt();
-    final int NEED_ACCOUNTS = Input.nextInt();
+    final int N = Input.nextInt();
 
-    Map<String, String> siteToAccount = new HashMap<>();
-
-    for (int i = 0; i < TOTAL_ACCOUNTS; i++) {
-      String site = Input.next();
-      String password = Input.next();
-
-      siteToAccount.put(site, password);
-    }
-
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < NEED_ACCOUNTS; i++) {
-      String needSite = Input.nextLine();
-      sb.append(siteToAccount.get(needSite)).append('\n');
-    }
+    int twoDivisorCount = 0;
+    int fiveDivisorCount = 0;
     
-    System.out.print(sb);
+    for (int i = 1; i <= N; i++) {
+      twoDivisorCount += getDivisorCount(i, 2);
+      fiveDivisorCount += getDivisorCount(i, 5);
+    }
+
+    System.out.print(Math.min(twoDivisorCount, fiveDivisorCount));
+  }
+
+  static int getDivisorCount(int number, int divisor) {
+    int count = 0;
+    while (number % divisor == 0) {
+      number /= divisor;
+      count++;
+    }
+    return count;
   }
 }
 

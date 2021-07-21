@@ -1,33 +1,16 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Main {
-  static int[] memorizedLeastSquares;
-
   public static void main(String[] args) throws Exception {
-    int num = Input.nextInt();
-    
-    memorizedLeastSquares = new int[50001];
-    System.out.print(getLeastSquares(num));
-  } 
+    System.out.print(nthFibo(Input.nextInt()));
+  }
 
-  static int getLeastSquares(int num) {
-    if (num == 0) return 0;
-    if (memorizedLeastSquares[num] != 0) return memorizedLeastSquares[num];
-
-    int sqrted = (int) Math.floor(Math.sqrt(num));
-    int leastSquares = 50000;
-
-    for (int i = sqrted; i >= 1; i--) {
-      int square = (int) Math.pow(i, 2);
-      if (num < square) continue;
-      leastSquares = Math.min(leastSquares, 1 + getLeastSquares(num - square));
-    }
-
-    memorizedLeastSquares[num] = leastSquares;
-    return leastSquares;
+  static int nthFibo(int n) {
+    if (n <= 1) return n;
+    return nthFibo(n-2) + nthFibo(n-1);
   }
 }
 

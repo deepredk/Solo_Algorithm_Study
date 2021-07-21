@@ -1,32 +1,28 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    final int STAIRS = Input.nextInt();
-
-    int[] stairs = new int[STAIRS + 1];
-    for (int i = 1; i <= STAIRS; i++) {
-      stairs[i] = Input.nextInt();
-    }
-
-    System.out.print(getMaxScore(stairs, 0, 0));
-  }
-
-  static int getMaxScore(int[] stairs, int currentStair, int oneStepCount) {
-    int score = stairs[currentStair];
-    int maxScore = score;
+    final int PEOPLE  = Input.nextInt();
     
-    if (currentStair <= stairs.length - 3) {
-      maxScore = Math.max(maxScore, score + getMaxScore(stairs, currentStair + 2, 0));
+    List<Integer> requiredTime = new ArrayList<>();
+    for (int i = 0; i < PEOPLE; i++) {
+      requiredTime.add(Input.nextInt());
     }
-    if (oneStepCount <= 1 && currentStair <= stairs.length - 2) {
-      maxScore = Math.max(maxScore, score + getMaxScore(stairs, currentStair + 1, oneStepCount + 1));
+    requiredTime.sort(null);
+
+    int totalSum = 0;
+    int partialSum = 0;
+    for (int i = 0; i < PEOPLE; i++) {
+      partialSum += requiredTime.get(i);
+      totalSum += partialSum;
     }
 
-    return maxScore;
+    System.out.print(totalSum);
   }
 }
 

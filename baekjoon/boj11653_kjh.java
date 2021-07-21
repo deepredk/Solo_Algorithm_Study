@@ -1,30 +1,37 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    final int N = Input.nextInt();
+    int number = Input.nextInt();
 
-    int twoDivisorCount = 0;
-    int fiveDivisorCount = 0;
+    StringBuilder sb = new StringBuilder();
+    for (int i = 2; i <= Math.sqrt(number); i++) {
+      while (number % i == 0) {
+        sb.append(i).append('\n');
+        number /= i;
+      }
+    }
     
-    for (int i = 1; i <= N; i++) {
-      twoDivisorCount += getDivisorCount(i, 2);
-      fiveDivisorCount += getDivisorCount(i, 5);
+    if (number != 1) {
+      sb.append(number);
     }
 
-    System.out.print(Math.min(twoDivisorCount, fiveDivisorCount));
+    System.out.print(sb);
   }
 
-  static int getDivisorCount(int number, int divisor) {
-    int count = 0;
-    while (number % divisor == 0) {
-      number /= divisor;
-      count++;
+  static boolean isPrime(int num) {
+    if (num == 1) return false;
+
+    for (int i = 2; i <= (int) Math.sqrt(num); i++) {
+      if (num % i == 0) return false;
     }
-    return count;
+
+    return true;
   }
 }
 

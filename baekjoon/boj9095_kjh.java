@@ -1,16 +1,38 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Main {
+  static int[] memorized;
+
   public static void main(String[] args) throws Exception {
-    System.out.print(nthFibo(Input.nextInt()));
+    final int T = Input.nextInt();
+    memorized = new int[12];
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < T; i++) {
+      int n = Input.nextInt();
+      sb.append(solve(n)).append('\n');
+    }
+    System.out.print(sb);
   }
 
-  static int nthFibo(int n) {
-    if (n <= 1) return n;
-    return nthFibo(n-2) + nthFibo(n-1);
+  static int solve(int n) {
+    if (n == 0) return 1;
+    if (memorized[n] != 0) return memorized[n];
+
+    int cases = 0;
+    if (n >= 3) {
+      cases += solve(n - 3);
+    }
+    if (n >= 2) {
+      cases += solve(n - 2);
+    }
+    cases += solve(n - 1);
+    
+    memorized[n] = cases;
+    return memorized[n];
   }
 }
 

@@ -1,39 +1,71 @@
-package solved;
+package algospot;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
 
 class Main {
-  static int[] memorized;
-
   public static void main(String[] args) throws Exception {
     final int T = Input.nextInt();
-    memorized = new int[12];
-
     StringBuilder sb = new StringBuilder();
+
     for (int i = 0; i < T; i++) {
-      int n = Input.nextInt();
-      sb.append(solve(n)).append('\n');
+      int nodes = Input.nextInt();
+
+      List<Integer> preorder = new ArrayList<>();
+      for (int j = 0; j < nodes; j++) {
+        preorder.add(Input.nextInt());
+      }
+
+      List<Integer> inorder = new ArrayList<>();
+      for (int j = 0; j < nodes; j++) {
+        inorder.add(Input.nextInt());
+      }
+
+      Node root = makeTree(preorder, inorder);
+      List<Integer> postorder = traversePostorder(root);
+
+      for (int j = 0; j < nodes; j++) {
+        sb.append(postorder.get(j)).append(' ');
+      }
+      sb.append('\n');
     }
+
     System.out.print(sb);
   }
 
-  static int solve(int n) {
-    if (n == 0) return 1;
-    if (memorized[n] != 0) return memorized[n];
+  static Node makeTree(List<Integer> preorder, List<Integer> inorder) {
+    if (inorder.size() == 0) return null;
 
-    int cases = 0;
-    if (n >= 3) {
-      cases += solve(n - 3);
-    }
-    if (n >= 2) {
-      cases += solve(n - 2);
-    }
-    cases += solve(n - 1);
-    
-    memorized[n] = cases;
-    return memorized[n];
+    Node root = new Node();
+    root.data = preorder.remove(0);
+
+    int rootIdx = inorder.indexOf(root.data);
+
+    root.left = makeTree(preorder, inorder.subList(0, rootIdx));
+    root.right = makeTree(preorder, inorder.subList(rootIdx + 1, inorder.size()));
+
+    return root;
   }
+
+  static List<Integer> traversePostorder(Node root) {
+    if (root == null) return new ArrayList<Integer>();
+
+    List<Integer> postorder = new ArrayList<>();
+    
+    postorder.addAll(traversePostorder(root.left));
+    postorder.addAll(traversePostorder(root.right));
+    postorder.add(root.data);
+
+    return postorder;
+  }
+}
+
+class Node {
+  public Integer data;
+  public Node left;
+  public Node right;
 }
 
 class Input {

@@ -1,33 +1,49 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Main {
-  static int[] memorized;
+  static int[] numberOfCallingZero;
+  static int[] numberOfCallingOne;
 
   public static void main(String[] args) throws Exception {
-    int X = Input.nextInt();
-    memorized = new int[1000001];
+    final int T = Input.nextInt();
+    
+    numberOfCallingZero = new int[41];
+    numberOfCallingOne = new int[41];
 
-    System.out.print(solve(X));
+    numberOfCallingZero[0] = 1;
+    numberOfCallingZero[2] = 1;
+    numberOfCallingOne[1] = 1;
+    numberOfCallingOne[2] = 1;
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < T; i++) {
+      int n = Input.nextInt();
+      sb.append(getNumberOfCallingZero(n))
+        .append(' ')
+        .append(getNumberOfCallingOne(n))
+        .append('\n');
+    }
+
+    System.out.print(sb);
   }
 
-  static int solve(int x) {
-    if (memorized[x] != 0) return memorized[x];
-    if (x == 1) return 0;
-    
-    int minOper = 1000000;
-    if (x % 3 == 0) {
-      minOper = Math.min(minOper, solve(x / 3));
-    }
-    if (x % 2 == 0) {
-      minOper = Math.min(minOper, solve(x / 2));
-    }
-    minOper = Math.min(minOper, solve(x - 1));
-    
-    memorized[x] = 1 + minOper;
-    return memorized[x];
+  static int getNumberOfCallingZero(int n) {
+    if (n == 1) return 0;
+    if (numberOfCallingZero[n] != 0) return numberOfCallingZero[n];
+
+    numberOfCallingZero[n] = getNumberOfCallingZero(n - 1) + getNumberOfCallingZero(n - 2);
+    return numberOfCallingZero[n];
+  }
+
+  static int getNumberOfCallingOne(int n) {
+    if (n == 0) return 0;
+    if (numberOfCallingOne[n] != 0) return numberOfCallingOne[n];
+
+    numberOfCallingOne[n] = getNumberOfCallingOne(n - 1) + getNumberOfCallingOne(n - 2);
+    return numberOfCallingOne[n];
   }
 }
 

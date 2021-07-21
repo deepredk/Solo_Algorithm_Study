@@ -1,51 +1,31 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.Map;
+import java.util.HashMap;
 
 class Main {
   public static void main(String[] args) throws Exception {
+    final int TOTAL_ACCOUNTS = Input.nextInt();
+    final int NEED_ACCOUNTS = Input.nextInt();
+
+    Map<String, String> siteToAccount = new HashMap<>();
+
+    for (int i = 0; i < TOTAL_ACCOUNTS; i++) {
+      String site = Input.next();
+      String password = Input.next();
+
+      siteToAccount.put(site, password);
+    }
+
     StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < NEED_ACCOUNTS; i++) {
+      String needSite = Input.nextLine();
+      sb.append(siteToAccount.get(needSite)).append('\n');
+    }
     
-    int numberOfCase = 1;
-    while (true) {
-      int properWeight = Input.nextInt();
-      int weight = Input.nextInt();
-      boolean isDead = false;
-
-      if (properWeight == 0) break;
-
-      while (true) {
-        char command = Input.nextChar();
-        int parameter = Input.nextInt();
-
-        if (command == 'F') {
-          weight += parameter;
-        }
-        if (command == 'E') {
-          weight -= parameter;
-          if (weight <= 0) isDead = true;
-        }
-
-        if (command == '#') {
-          sb.append(numberOfCase++).append(' ').append(isDead ? "RIP" : diagnoseCondition(properWeight, weight))
-            .append('\n');
-          break;
-        }
-      }
-    }
-
     System.out.print(sb);
-  }
-
-  static String diagnoseCondition(int properWeight, int weight) {
-    if (weight < 0) return "RIP";
-
-    if (weight > properWeight / 2 && weight < properWeight * 2) {
-      return ":-)";
-    }
-
-    return ":-(";
   }
 }
 

@@ -1,40 +1,33 @@
-package solved;
+package baekjoon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Comparator;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-import java.util.stream.Stream;
 
 class Main {
+  static int[] memorized;
+
   public static void main(String[] args) throws Exception {
-    List<Integer> scores = new ArrayList<>();
+    int X = Input.nextInt();
+    memorized = new int[1000001];
 
-    int totalScore = 0;
-    for (int i = 0; i < 8; i++) {
-      int score = Input.nextInt();
+    System.out.print(solve(X));
+  }
 
-      scores.add(score);
-      totalScore += score;
-    }
-
-    List<Integer> top5Scores = scores.stream()
-      .sorted(Comparator.reverseOrder())
-      .limit(5)
-      .collect(toList());
-
-    int top5ScoresSum = top5Scores.stream().reduce(0, Integer::sum);
-    String top5AnswersNumber = top5Scores.stream()
-      .mapToInt(i -> scores.indexOf(i) + 1)
-      .sorted()
-      .mapToObj(String::valueOf)
-      .collect(joining(" "));
+  static int solve(int x) {
+    if (memorized[x] != 0) return memorized[x];
+    if (x == 1) return 0;
     
-    System.out.println(top5ScoresSum);
-    System.out.println(top5AnswersNumber);
+    int minOper = 1000000;
+    if (x % 3 == 0) {
+      minOper = Math.min(minOper, solve(x / 3));
+    }
+    if (x % 2 == 0) {
+      minOper = Math.min(minOper, solve(x / 2));
+    }
+    minOper = Math.min(minOper, solve(x - 1));
+    
+    memorized[x] = 1 + minOper;
+    return memorized[x];
   }
 }
 
