@@ -24,7 +24,7 @@ class Main {
   }
 
   static double getLeastAverageCost(int[] costs, int numberOfTeams) {
-    int leastCost = 100000;
+    double leastAverageCost = 100000.0;
 
     for (int i = numberOfTeams; i <= costs.length; i++) { // 몇일 빌릴지
       for (int j = 0; j <= costs.length - i; j++) { // 첫 인덱스
@@ -32,17 +32,11 @@ class Main {
         for (int k = j; k < j + i; k++) { // 빌릴 인덱스
           costSum += costs[k];
         }
-        leastCost = Math.min(leastCost, costSum);
+        leastAverageCost = Math.min(leastAverageCost, (double) costSum / i);
       }
     }
 
-    double leastAverageCost = (double) leastCost / costs.length;
     return leastAverageCost;
-  }
-
-  static String doubleToString(double number) {
-    DecimalFormat dot11digits = new DecimalFormat("0.00000000000");
-    return dot11digits.format(number);
   }
 }
 
